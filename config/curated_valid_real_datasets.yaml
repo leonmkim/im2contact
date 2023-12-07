@@ -1,0 +1,36 @@
+curated_val_dataset_list+:
+  - class_path: 'src.dataset.contact_dataclasses.CuratedValidationDatasetDict'
+    init_args:
+      enable: False
+      epoch_interval: 5
+      settings_dict: 
+        dataset_name: 'real'
+        num_workers: 12
+        batch_size: 1
+        log_video: True
+        real_dataset: True
+      dataset_episode_collection_dict_list: 
+        - class_path: 'src.dataset.contact_dataclasses.DatasetEpisodeCollectionDict'
+          init_args:
+            dataset_root_dir_path_local: '/mnt/hdd/datasetsHDD/contact_estimation/real'
+            dataset_root_dir_path_remote: '/mnt/kostas-graid/datasets/extrinsic_contact_data/real'
+            dataset_dir_name: 'teleop_real_480x640_L515_2023-05-08-23-54-37'
+            episode_idx_list: [1,4]
+        - class_path: 'src.dataset.contact_dataclasses.DatasetEpisodeCollectionDict'
+          init_args:
+            dataset_root_dir_path_local: '/mnt/hdd/datasetsHDD/contact_estimation/real'
+            dataset_root_dir_path_remote: '/mnt/kostas-graid/datasets/extrinsic_contact_data/real'
+            dataset_dir_name: 'teleop_real_480x640_L515_2023-05-09-17-05-40'
+            episode_idx_list: [2,7,9,10,12,15,17,19]
+        - class_path: 'src.dataset.contact_dataclasses.DatasetEpisodeCollectionDict'
+          init_args:
+            dataset_root_dir_path_local: '/mnt/hdd/datasetsHDD/contact_estimation/real'
+            dataset_root_dir_path_remote: '/mnt/kostas-graid/datasets/extrinsic_contact_data/real'
+            dataset_dir_name: 'teleop_real_480x640_L515_2023-05-17-23-25-02'
+            episode_idx_list: [0,1,5,7,10]
+        - class_path: 'src.dataset.contact_dataclasses.DatasetEpisodeCollectionDict'
+          init_args:
+            dataset_root_dir_path_local: '/mnt/hdd/datasetsHDD/contact_estimation/real'
+            dataset_root_dir_path_remote: '/mnt/kostas-graid/datasets/extrinsic_contact_data/real'
+            dataset_dir_name: 'teleop_real_480x640_L515_2023-05-18-22-50-10'
+            episode_idx_list: [3,4,7]

@@ -1,0 +1,32 @@
+model:
+  nms_dict:
+    per_sample_metrics: False
+    log_aggregate_metrics: False
+data:
+  test_dataset_dict_list:
+    - class_path: 'src.dataset.contact_dataclasses.TestDatasetDict'
+      init_args:
+        settings_dict: 
+          dataset_name: 'sim'
+          num_workers: 12
+          batch_size: 1
+          log_video: True
+          evaluate_metrics: False
+          real_dataset: False
+          downsampled_images: True
+        dataset_episode_collection_dict_list: 
+          - class_path: 'src.dataset.contact_dataclasses.DatasetEpisodeCollectionDict'
+            init_args:
+              dataset_root_dir_path_local: '/mnt/hdd/datasetsHDD/contact_estimation/simulated'
+              dataset_root_dir_path_remote: '/mnt/kostas-graid/datasets/extrinsic_contact_data/real'
+              dataset_dir_name: 'test_sim_dataset'
+              episode_idx_list: '(0,50)' #if string tuple: interpreted as a range
+trainer:
+  logger: 
+    - class_path: src.utils.custom_csv_logger.CustomLogger
+      init_args:
+        save_root_dir: '/mnt/hdd/datasetsHDD/logs/test_local'
+        # name: 'test_local_contact'
+        flush_logs_every_n_steps: 100
+        log_once_per_episode: True
+        save_logs: False

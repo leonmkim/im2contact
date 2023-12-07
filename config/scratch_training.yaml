@@ -1,0 +1,86 @@
+# overwrites the defaults defined in training_local_lightning.yaml!
+model:
+  model_type: 'local' # or conditional_local 
+  proprioception_input_dict:
+    EE_pose: False
+    external_wrench: False
+    desired_joint_torques: False
+    rotation_representation: 'quaternion' 
+    in_cam_frame_dict: 
+      enable: False
+    history_dict:
+      enable: False
+      time_window: 0.1
+      sample_freq: 100
+  compensate_obj_gravity_dict: 
+    enable: False
+    EE_pos_x_objCoM: 0.0
+    EE_pos_y_objCoM: 0.15
+    EE_pos_z_objCoM: 0.0
+    start_idx: 10
+    num_idxs: 250 
+  optical_flow_dict:
+    enable: True
+  cropping_dict:
+    enable: True
+  context_frame_dict:
+    enable: True
+  add_noise_dict:
+    enable: False
+    noise_type: 'gaussian_per_sample' # "bias_per_batch", "sin_per_batch"
+    FT_dict:
+      mean_gaussian: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      std_gaussian: [0.3, 0.3, 0.3, 0.1, 0.1, 0.1]
+      freq_sin_mean: [25, 25, 25, 25, 25, 25]
+      freq_sin_std: [5, 5, 5, 5, 5, 5]
+      amp_sin_mean: [1, 1, 1, .2, .2, .2]
+      amp_sin_std: [0.5, 0.5, 0.5, .1, .1, .1]
+      phase_sin_mean: [0, 0, 0, 0, 0, 0]
+      phase_sin_std: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5]
+    desired_joint_torque_dict:
+      mean_gaussian: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      std_gaussian: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+      freq_sin_mean: [25, 25, 25, 25, 25, 25, 25]
+      freq_sin_std: [5, 5, 5, 5, 5, 5]
+      amp_sin_mean: [.2, .2, .2, .2, .2, .2, .2]
+      amp_sin_std: [.1, .1, .1, .1, .1, .1, .1]
+      phase_sin_mean: [0, 0, 0, 0, 0, 0, 0]
+      phase_sin_std: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5]
+    joint_velo_dict: 
+      mean_gaussian: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      std_gaussian: [0.06, 0.06, 0.06, 0.06, 0.06, 0.06, 0.06]
+      freq_sin_mean: [25, 25, 25, 25, 25, 25, 25]
+      freq_sin_std: [5, 5, 5, 5, 5, 5]
+      amp_sin_mean: [.1, .1, .1, .1, .1, .1, .1]
+      amp_sin_std: [.05, .05, .05, .05, .05, .05, .05]
+      phase_sin_mean: [0, 0, 0, 0, 0, 0, 0]
+      phase_sin_std: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5]   
+data:
+  fit_dataset_dict:
+    class_path: 'src.dataset.contact_dataclasses.FitDatasetDict'
+    init_args:
+      # total of 4564 episodes
+      train_num_episodes: 2
+      val_num_episodes: 2
+trainer:
+  logger: 
+    class_path: pytorch_lightning.loggers.WandbLogger
+    init_args:
+      name: 'test'
+      log_model: 'all'
+      offline: False
+      # offline: True
+      # log_model: False
+      notes: 'test'
+  callbacks:
+  - class_path: pytorch_lightning.callbacks.model_checkpoint.ModelCheckpoint
+    init_args:
+    # https://github.com/Lightning-AI/lightning/discussions/5782 about automatic addition of dataloader_idx
+      monitor: 'val_NMS_monolithic_epoch'
+      mode: 'min'
+      save_top_k: 1
+      save_last: True
+      filename: '{epoch:02d}-{val_loss:.2f}'
+      every_n_epochs: 1
+      verbose: True
+      save_on_train_epoch_end: True

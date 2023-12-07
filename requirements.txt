@@ -1,0 +1,27 @@
+catkin_pkg==0.5.2
+dataloader==2.0
+imageio==2.31.0
+imgaug==0.4.0
+ipython==8.7.0
+matplotlib==3.7.2
+moviepy==1.0.3
+natsort==8.3.1
+numpy==1.23.5
+opencv_python==4.7.0.72
+pandas==2.0.2
+Pillow==10.1.0
+pygame==2.1.2
+pytorch_lightning==2.0.8
+PyYAML==6.0
+RAFT==1.5
+rospy_message_converter==0.5.2
+scipy==1.11.4
+seaborn==0.13.0
+skimage==0.0
+torch==2.0.1
+torchmetrics==1.0.0
+torchvision==0.15.2
+tqdm==4.65.0
+wandb
+--extra-index-url https://rospypi.github.io/simple/
+rosbag

@@ -1,0 +1,37 @@
+model:
+  nms_dict:
+    per_sample_metrics: True
+    log_aggregate_metrics: True
+data:
+  test_dataset_dict_list:
+    - class_path: 'src.dataset.contact_dataclasses.TestDatasetDict'
+      init_args:
+        settings_dict: 
+          dataset_name: 'real_labelled'
+          num_workers: 12
+          batch_size: 1
+          real_dataset: True
+          is_annotated_local: True
+          is_annotated_global: True
+          log_video: False
+          viz_global_contact: False
+          evaluate_metrics: True
+          proprio_filter_dict:
+            enable: False
+            filter_name: 'filtered_o_3_f_5'
+        dataset_episode_collection_dict_list: 
+          - class_path: 'src.dataset.contact_dataclasses.DatasetEpisodeCollectionDict'
+            init_args:
+              dataset_root_dir_path_local: '/home/serialexperimentsleon/datasets/real'
+              dataset_root_dir_path_remote: '/mnt/kostas-graid/datasets/extrinsic_contact_data/real'
+              dataset_dir_name: 'annotated_episodes'
+              episode_idx_list: -1
+trainer:
+  logger: 
+    - class_path: src.utils.custom_csv_logger.CustomLogger
+      init_args:
+        save_root_dir: '/mnt/hdd/datasetsHDD/logs/test_local'
+        # name: 'test_local_contact'
+        flush_logs_every_n_steps: 100
+        log_once_per_episode: False
+        save_logs: True

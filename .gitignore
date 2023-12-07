@@ -1,0 +1,97 @@
+.history/
+MobileSAM
+urdfpy
+Helper3D
+
+*.py[cod]
+__pycache__
+__pycache__/
+*$py.class
+*.pyc
+
+# C extensions
+*.so
+
+# generated videos
+*.mp4
+*.avi
+
+# Packages
+*.egg
+*.egg-info
+dist
+build
+eggs
+parts
+bin
+var
+sdist
+develop-eggs
+.installed.cfg
+lib
+lib64
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.cproject
+cmake_install.cmake
+.pydevproject
+*.swp
+*.swo
+CATKIN_IGNORE
+catkin
+catkin_generated
+devel
+
+cpp
+docs_src
+doc_src
+docs_build
+msg_gen
+srv_gen
+*.smoketest
+*.cfgc
+*_msgs/src/
+*/src/**/cfg
+*/*/src/**/*
+
+# ignore slurm out files
+*.out
+
+# ignore generated videos
+*.mp4
+*.webm
+*.png
+
+# ignore saved models directory
+Pytorch-UNet/
+src/rosbag_pandas/
+src/model_chkpnts/
+*.ipynb_checkpoints/
+*wandb/
+*lightning_logs/
+*ft_calibration/
+*.ckpt
+*.pt
+*.code-workspace
+
+# ignore the RAFT directory
+RAFT/
+
+logs/
+barchart_plots/
+artifacts/
+ft_calibration_models/
+ablation_figures/

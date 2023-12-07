@@ -1,0 +1,61 @@
+seed_everything: 0
+checkpoint_reference: 'contact-estimation/local_contact/model-88985_3:best_k' # context frame + optical flow
+data_test_keys_to_overwrite_checkpoint: ['test_dataset_dict_list', 'proprio_history_plotting_dict']
+model_test_keys_to_overwrite_checkpoint: ['nms_dict', 'viz_utils_dict', 'vid_utils_dict', 'eval_metrics_settings_dict']
+model:
+  nms_dict:
+    window_radius: 5.0
+    top_n_samples: 15
+    threshold : 0.01  # Keeping less points is better # Need to turn to tensor
+    lambda_FP: 1.0
+    lambda_FN: 1.0  
+    max_num_contact: 15
+    TP_pixel_radius: 15
+    per_sample_metrics: False
+    gaussian_kernel_size: 5
+  viz_utils_dict:
+    forces_ylim: [-15, 15]
+    torques_ylim: [-5, 5]
+    viz_max_depth_clip: 1.8
+    viz_min_depth_clip: 0.4
+    circle_dict: # change this to a box to correspond with the NMS metric!
+      enable: True
+      radius: 4
+      thickness: 1
+      color: [0, 0, 255]
+    cross_length: 3
+    convert_color_to_gray: False
+    color_image_settings_dict:
+      saturation_coefficient: 0.3
+      brightness_coefficient: 30
+    normalize_local_prob: True
+  vid_utils_dict:
+    file_root_dir: 'videos/test_local'
+    is_annotated_local: True    # Turn on LOCAL ANNOTATION VISUALIZATION
+  eval_metrics_settings_dict:
+    evaluate_on_EE_cropped_dict:
+      enable: False
+      bb_height: 90
+      bb_width: 110
+      down_scale: 22
+# max_depth_clip: 2.0
+data:
+  test_dataset_dict_list: []
+  proprio_history_plotting_dict:
+    enable: True
+    time_window: 1.0
+    sample_freq: 100
+trainer:
+  gpus: 1
+  # precision: 16
+  num_sanity_val_steps: 0
+  accumulate_grad_batches: 1
+  log_every_n_steps: 1
+  fast_dev_run: False
+  logger: 
+    - class_path: src.utils.custom_csv_logger.CustomLogger
+      init_args:
+        save_root_dir: '/mnt/hdd/datasetsHDD/logs/test_local'
+        # name: 'test_local_contact'
+        flush_logs_every_n_steps: 100
+        log_once_per_episode: False

@@ -1,0 +1,177 @@
+seed_everything: 42
+model:
+  model_type: 'local' # or conditional_local 
+  lr: 0.0005
+  weight_decay: 0.00001
+  nms_dict:
+    window_radius: 5.0
+    top_n_samples: 15
+    threshold : 0.01  # Keeping less points is better # Need to turn to tensor
+    lambda_FP: 1.0
+    lambda_FN: 1.0  
+    max_num_contact: 15
+    TP_pixel_radius: 15
+    gaussian_kernel_size: 5
+  im_resize_tuple: [240, 320] # not allowed to use tuple so just use list
+  pose_hidden_list: [32, 32, 32]
+  wrench_hidden_list: [32, 32, 32]
+  bilinear: True
+  max_depth_clip: 2.0
+  fuse_inputs: False
+  proprioception_input_dict:
+    EE_pose: False
+    external_wrench: False
+    desired_joint_torques: False
+    rotation_representation: 'quaternion' 
+    in_cam_frame_dict: 
+      enable: True
+      C_R_W: 
+        - [0, 0.203567160, -0.979060985]
+        - [1, 0, 0]
+        - [0, -0.979060985, -0.203567160]
+      C_t_W: [0.0, -0.00158629880, 1.67259212]
+    history_dict:
+      enable: False
+      time_window: 0.1
+      sample_freq: 100
+  compensate_obj_gravity_dict: 
+    enable: True
+    EE_pos_x_objCoM: 0.0
+    EE_pos_y_objCoM: 0.15
+    EE_pos_z_objCoM: 0.0
+    start_idx: 10
+    num_idxs: 250 
+  normalize_dict:
+    enable: True
+    # end effector position
+    O_position_EE_min: [0.0, -0.6, -0.2] #x,y,z
+    O_position_EE_max: [0.8, 0.6, 0.5]
+    # external wrenches
+    O_F_ext_EE_min: [-20, -20, -20, -10, -10, -10] #x,y,z force, x,y,z torque
+    O_F_ext_EE_max: [20, 20, 20, 10, 10, 10] 
+    # desired torques for joints 1-7
+    desired_torques_min: [-20, -30, -20, -20, -10, -10, -5]
+    desired_torques_max: [20, 30, 20, 20, 10, 10, 5]
+    # joint velocities
+    joint_velocities_min: [-1.5, -1.5, -1.5, -1.5, -1.5, -1.5, -1.5]
+    joint_velocities_max: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5]
+  cropping_dict:
+    enable: True
+    bb_height: 90
+    bb_width: 110
+    down_scale: 22
+  optical_flow_dict:
+    enable: False
+    use_image: False
+    normalize: True
+    max_flow_norm: 10.0
+    fill_holes: True
+  context_frame_dict:
+    enable: False
+  blur_contact_map_dict:
+    enable: True
+    kernel_size: 5 # in pixels
+    sigma: 0 # if 0, sigma is calculated automatically from kernel size
+  viz_utils_dict:
+    forces_ylim: [-15, 15]
+    torques_ylim: [-5, 5]
+    viz_max_depth_clip: 1.8
+    viz_min_depth_clip: 0.4
+    cross_length: 4
+    circle_dict: # change this to a box to correspond with the NMS metric!
+      enable: True
+      radius: 10
+      thickness: 1
+      color: [255, 255, 255]
+    convert_color_to_gray: True
+    normalize_local_prob: True
+  vid_utils_dict:
+    file_root_dir: 'videos/local'
+    is_annotated_local: True    # Turn on LOCAL ANNOTATION VISUALIZATION
+  add_noise_dict:
+    enable: False
+    noise_type: 'gaussian_per_sample' # "bias_per_batch", "sin_per_batch"
+    FT_dict:
+      mean_gaussian: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      std_gaussian: [0.3, 0.3, 0.3, 0.1, 0.1, 0.1]
+      freq_sin_mean: [25, 25, 25, 25, 25, 25]
+      freq_sin_std: [5, 5, 5, 5, 5, 5]
+      amp_sin_mean: [1, 1, 1, .2, .2, .2]
+      amp_sin_std: [0.5, 0.5, 0.5, .1, .1, .1]
+      phase_sin_mean: [0, 0, 0, 0, 0, 0]
+      phase_sin_std: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5]
+    desired_joint_torque_dict:
+      mean_gaussian: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      std_gaussian: [0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+      freq_sin_mean: [25, 25, 25, 25, 25, 25, 25]
+      freq_sin_std: [5, 5, 5, 5, 5, 5]
+      amp_sin_mean: [.2, .2, .2, .2, .2, .2, .2]
+      amp_sin_std: [.1, .1, .1, .1, .1, .1, .1]
+      phase_sin_mean: [0, 0, 0, 0, 0, 0, 0]
+      phase_sin_std: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5]
+    joint_velo_dict: 
+      mean_gaussian: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+      std_gaussian: [0.06, 0.06, 0.06, 0.06, 0.06, 0.06, 0.06]
+      freq_sin_mean: [25, 25, 25, 25, 25, 25, 25]
+      freq_sin_std: [5, 5, 5, 5, 5, 5]
+      amp_sin_mean: [.1, .1, .1, .1, .1, .1, .1]
+      amp_sin_std: [.05, .05, .05, .05, .05, .05, .05]
+      phase_sin_mean: [0, 0, 0, 0, 0, 0, 0]
+      phase_sin_std: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5]   
+data:
+  fit_dataset_dict:
+    class_path: 'src.dataset.contact_dataclasses.FitDatasetDict'
+    init_args:
+      # total of 4564 episodes
+      dataset_root_dir_path_local: '/mnt/hdd/datasetsHDD/contact_estimation/simulated'
+      dataset_root_dir_path_remote: '/mnt/kostas-graid/datasets/extrinsic_contact_data/simulated'
+      dataset_name_list:
+        - '15_sec_episodes_8_objects_l515_480640_clearview_realfriction_2023-05-20-22-47-18' 
+      real_dataset: False
+      train_num_episodes: 2
+      val_num_episodes: 2
+      train_batch_size: 8
+      val_batch_size: 8
+      train_num_workers: 12
+      val_num_workers: 12
+      l515: True
+      downsampled_images: False
+  proprio_history_plotting_dict:
+    enable: True
+    time_window: 1.0
+    sample_freq: 100
+trainer:
+  num_sanity_val_steps: 0
+  # overfit_batches: 0.0
+  deterministic: 'warn' # cant use this with bilinear upsampling...
+  max_epochs: 26
+  gpus: 1
+  # precision: 16
+  accumulate_grad_batches: 1
+  log_every_n_steps: 100
+  val_check_interval: 1.0
+  fast_dev_run: False
+  reload_dataloaders_every_n_epochs: 1 # needed to trigger the curated dataset
+  logger: 
+    class_path: pytorch_lightning.loggers.WandbLogger
+    init_args:
+      project: 'local_contact'
+      name: 'test'
+      entity: 'contact-estimation'
+      # save_code: True
+      log_model: 'all'
+      offline: False
+      notes: 'test'
+  callbacks:
+  # callback to save the best model
+  - class_path: pytorch_lightning.callbacks.model_checkpoint.ModelCheckpoint
+    init_args:
+    # https://github.com/Lightning-AI/lightning/discussions/5782 about automatic addition of dataloader_idx
+      monitor: 'val_NMS_monolithic_epoch'
+      mode: 'min'
+      save_top_k: 1
+      save_last: True
+      filename: '{epoch:02d}-{val_loss:.2f}'
+      every_n_epochs: 1
+      verbose: True
+      save_on_train_epoch_end: True
