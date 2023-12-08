@@ -1,7 +1,4 @@
 .history/
-MobileSAM
-urdfpy
-Helper3D
 
 *.py[cod]
 __pycache__
@@ -77,7 +74,6 @@ srv_gen
 
 # ignore saved models directory
 Pytorch-UNet/
-src/rosbag_pandas/
 src/model_chkpnts/
 *.ipynb_checkpoints/
 *wandb/
@@ -87,8 +83,6 @@ src/model_chkpnts/
 *.pt
 *.code-workspace
 
-# ignore the RAFT directory
-RAFT/
 
 logs/
 barchart_plots/

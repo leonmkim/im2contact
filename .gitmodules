@@ -1,0 +1,6 @@
+[submodule "src/rosbag_pandas"]
+	path = src/rosbag_pandas
+	url = https://github.com/leonmkim/rosbag_pandas.git
+[submodule "RAFT"]
+	path = RAFT
+	url = https://github.com/princeton-vl/RAFT.git
